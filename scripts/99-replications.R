@@ -32,7 +32,7 @@ public_data <- incentive_data|>
 # To do: currently using Semipar library to replicate the semiparametic regression 
 #       mentioned in the orignal paper; this could be tuned further to look more similar to the paper
 
-pdf("paper/Figure2.pdf")
+pdf("paper/replications/Figure2.pdf")
 
 attach(private_data)
 fit_private_grape2 <- spm(grape2~f(table_incentive_pr), family = "gaussian", spar.method = "ML")
@@ -58,7 +58,7 @@ dev.off()
 # To do: currently using Semipar library to replicate the semiparametic regression
 #       mentioned in the orignal paper; this could be tuned further to look more similar to the paper
 
-pdf("paper/Figure3.pdf")
+pdf("paper/replications/Figure3.pdf")
 
 attach(private_data)
 fit_private_grape <- spm(grape~f(table_incentive_pr), family = "gaussian", spar.method = "ML")

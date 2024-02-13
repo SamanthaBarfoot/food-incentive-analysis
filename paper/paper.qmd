@@ -1,10 +1,10 @@
 ---
 title: "My title"
-subtitle: "My subtitle if needed"
 author: 
-  - First author
-  - Another author
-thanks: "Code and data are available at: LINK."
+  - Sam Barfoot
+  - Brooklin Becker
+  - Mehrnoush Mohammadi
+thanks: "Code and data are available at: https://github.com/SamanthaBarfoot/food-incentive-analysis.git"
 date: today
 date-format: long
 abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
@@ -14,135 +14,418 @@ bibliography: references.bib
 ---
 
 ```{r}
+#| echo: false
 #| include: false
 #| warning: false
 #| message: false
 
 library(tidyverse)
-library(palmerpenguins)
+library(knitr)
+library(kableExtra)
+library(ggplot2)
+library(dplyr)
 ```
-
 
 # Introduction
 
-You can and should cross-reference sections and sub-sections. We use @citeR and @rohan.
+In this paper, we will provide a deeper analysis of the original paper, 'Incentives and Unintended Consequences: Spillover Effects in Food Choice' (add reference). The original study was conducted on 1631 students from various K-8 elementary schools in a low-income neighborhood in Chicago, IL. The purpose of the study was to determine whether there were spillover effects of students making decisions based on their peers' decisions as well as their peers' incentives. The study consisted of two stages. In the first stage (G1), each student was given a card from a deck which offered the choice of cookies or grapes, where the grapes sometimes came with a prize as an incentive to be chosen. In the second stage (G2), each student was given the opportunity to change their choice of food based on the initial decisions of their peers. Students were sat in tables of sizes up to 10 students, in which the proportion of cards in the deck that contained incentivized grapes were 0%, 50%, or 100%. Furthermore, some tables were designated as public treatment, in which students were able to see the incentive status of their peers, and some tables were designated as private treatment, in which students were unable to see the incentive status of their peers.
 
-The remainder of this paper is structured as follows. @sec-data....
-
-
+The remainder of this paper is structured as follows. In @sec-data, we compile the subset of data that only includes the students that took part in the public treatment study and not the private treatment study, as students were offered more information to inform their final decisions when able to see the incentive status of their peers. In @sec-results, we dive deeper into analyzing possible factors that may influence a student's final food choice in stage G2. We leverage ggplot2 in creating bar graphs to represent the grouped data for the various factors that were analyzed. Finally, in @sec-discussion, we summarize our results and also identify other factors or biases that may have affected the results, on a qualitative or quantitative level.
 
 # Data {#sec-data}
 
-Some of our data is of penguins (@fig-bills), from @palmerpenguins.
+The original study data included 1631 students, in which the incentive status, public/private status, table size, table incentive proportion, sex, race, eligibility for free lunches, and food choices for both stages G1 and G2 was compiled for each student. By filtering out the original data to only show students who participated in the public treatment, the sample size reduces from 1631 students to 883 students, representing roughly 54% of the original sample size. Below is the table summary of all students in public treatment tables, with a subset of columns displayed representing some of the factors to be analyzed in @sec-results. Comments regarding data cleaning methods are mentioned in @sec-discussion.
+
+We separated each student into 4 subgroups, based on the following criteria:
+
+- Public and 0% of the card deck is incentivized,
+
+- Public and 50% of the card deck is incentivized where the student is not incentivized,
+
+- Public and 50% of the card deck is incentivized where the student is incentivized, and
+
+- Public and 100% of the card deck is incentivized.
 
 ```{r}
-#| label: fig-bills
-#| fig-cap: Bills of penguins
 #| echo: false
+#| include: false
 
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = "none") +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
+#### Load Data ####
+incentive_data <-
+  read_csv(
+    file = "../data/analysis_data/food_data.csv",
+    show_col_types = FALSE,
+    # skip = 1
+  )
+
+# Filter data for only public treatment tables
+public_data <- incentive_data|>
+  filter(private == 0)
+
+
+#https://tellingstorieswithdata.com/11-eda.html#united-states-population-and-income-data
+incentive_data_sum <-
+incentive_data |>
+  as_tibble() |>
+  mutate(state = rownames(incentive_data)) |>
+  select(public, incentive, table_incentive_pr, table_size, male, black, grade, hispanic, free)
+ 
+# Change all column contains '999' to NA
+incentive_data_sum[incentive_data_sum == 999] <- NA
+
 ```
 
-Talk more about it.
-
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
-
-```{r}
-#| label: fig-planes
-#| fig-cap: Relationship between wing length and width
-#| echo: false
-#| warning: false
-#| message: false
-
-analysis_data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
-
-analysis_data |> 
-  ggplot(aes(x = width, y = length)) +
-  geom_point(alpha = 0.8) +
-  theme_minimal() +
-  labs(x = "Wing width (mm)",
-       y = "Wing length (mm)")
-```
-
-Talk way more about it. 
-
-
-
-# Model
-
-The goal of our modelling strategy is twofold. Firstly,...
-
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
-
-## Model set-up
-
-Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
-
-\begin{align} 
-y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha + \beta_i + \gamma_i\\
-\alpha &\sim \mbox{Normal}(0, 2.5) \\
-\beta &\sim \mbox{Normal}(0, 2.5) \\
-\gamma &\sim \mbox{Normal}(0, 2.5) \\
-\sigma &\sim \mbox{Exponential}(1)
-\end{align}
-
-We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
-
-
-### Model justification
-
-We expect a positive relationship between the size of the wings and time spent aloft. In particular...
-
-We can use maths by including latex between dollar signs, for instance $\theta$.
-
-
-# Results
-
-Our results are summarized in @tbl-modelresults.
 
 ```{r}
 #| echo: false
-#| eval: true
-#| warning: false
-#| message: false
+#| include: false
 
-library(rstanarm)
+# Public-0-no incentive: Children in the public treatment in which none of the grape cards were incentivized.
+public_0_no_incentive <- incentive_data_sum |>
+  filter(public == 1 & table_incentive_pr == 0)
 
-first_model <-
-  readRDS(file = here::here("models/first_model.rds"))
-```
+# Calculate mean values for each numeric column excluding NAs
+#https://www.r-bloggers.com/2023/07/exploring-data-with-colmeans-in-r-a-programmers-guide/
+mean_values <- colMeans(public_0_no_incentive, na.rm = TRUE)
 
-```{r}
-#| echo: false
-#| eval: true
-#| label: tbl-modelresults
-#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
-#| warning: false
+# Round mean values to two decimal places
+mean_values <- round(mean_values, 2)
 
-modelsummary::modelsummary(
-  list(
-    "First model" = first_model
-  ),
-  statistic = "mad",
-  fmt = 2
+# Get the total number of rows
+total_rows <- nrow(public_0_no_incentive)
+
+# Create a new data frame with the mean values and total rows
+sum_table <- data.frame(
+  Group = 'Public-0',
+  Variable = names(mean_values),
+  Mean = mean_values,
+  Observations = total_rows
 )
+sum_table_wide <- pivot_wider(sum_table, names_from = "Variable", values_from = "Mean")
+
 ```
 
 
+```{r}
+#| echo: false
+#| include: false
+
+# Public-50-no incentive: Children in the public treatment in which 50 percent of the grape cards were incentivized, and the child’s own card was not incentivized. 
+public_50_no_incentive <- incentive_data_sum %>%
+  filter(public == 1 & table_incentive_pr > 0 & table_incentive_pr < 1  & incentive == 0)
+
+# Calculate mean values for each numeric column excluding NAs
+mean_values <- colMeans(public_50_no_incentive, na.rm = TRUE)
+
+# Round mean values to two decimal places
+mean_values <- round(mean_values, 2)
+
+# Get the total number of rows
+total_rows <- nrow(public_50_no_incentive)
+
+# Create a new data frame with the mean values and total rows
+sum_table <- data.frame(
+  Group = 'Public-50-no incentive',
+  Variable = names(mean_values),
+  Mean = mean_values,
+  Observations = total_rows
+)
+
+sum_table <- pivot_wider(sum_table, names_from = "Variable", values_from = "Mean")
+
+# Append sum_table to sum_table_wide
+sum_table_wide <- rbind(sum_table_wide, sum_table)
+
+```
 
 
-# Discussion
+```{r}
+#| echo: false
+#| include: false
 
-## First discussion point {#sec-first-point}
+# Public-50-incentive: Children in the public treatment in which 50 percent of the grape cards were incentivized, and the child’s own card was incentivized
+Public_50_incentive <- incentive_data_sum %>%
+  filter(public == 1 & table_incentive_pr > 0 & table_incentive_pr < 1  & incentive == 1)
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
+
+# Calculate mean values for each numeric column excluding NAs
+mean_values <- colMeans(Public_50_incentive, na.rm = TRUE)
+
+# Round mean values to two decimal places
+mean_values <- round(mean_values, 2)
+
+# Get the total number of rows
+total_rows <- nrow(Public_50_incentive)
+
+# Create a new data frame with the mean values and total rows
+sum_table <- data.frame(
+  Group = 'Public-50-incentive',
+  Variable = names(mean_values),
+  Mean = mean_values,
+  Observations = total_rows
+)
+
+sum_table <- pivot_wider(sum_table, names_from = "Variable", values_from = "Mean")
+
+# Append new_data to sum_table_wide
+sum_table_wide <- rbind(sum_table_wide, sum_table)
+
+```
+
+
+```{r}
+#| echo: false
+#| include: false
+
+# Public-100-incentive: Children in the public treatment in which all of the grape cards were incentivized.
+Public_100_incentive <- incentive_data_sum %>%
+  filter(public == 1 & table_incentive_pr == 1 & incentive == 1)
+
+# Calculate mean values for each numeric column excluding NAs
+mean_values <- colMeans(Public_100_incentive, na.rm = TRUE)
+
+# Round mean values to two decimal places
+mean_values <- round(mean_values, 2)
+
+# Get the total number of rows
+total_rows <- nrow(Public_100_incentive)
+
+# Create a new data frame with the mean values and total rows
+sum_table <- data.frame(
+  Group = 'Public-100-incentive',
+  Variable = names(mean_values),
+  Mean = mean_values,
+  Observations = total_rows
+)
+
+sum_table <- pivot_wider(sum_table, names_from = "Variable", values_from = "Mean")
+
+# Append new_data to sum_table_wide
+sum_table_wide <- rbind(sum_table_wide, sum_table)
+
+```
+
+
+```{r}
+#| echo: false
+#| include: false
+
+combined_table <- rbind(public_0_no_incentive, public_50_no_incentive, Public_50_incentive, Public_100_incentive)
+
+mean_values <- colMeans(combined_table, na.rm = TRUE)
+
+# Round mean values to two decimal places
+mean_values <- round(mean_values, 2)
+
+# Get the total number of rows
+total_rows <- nrow(combined_table)
+
+# Create a new data frame with the mean values and total rows
+sum_table <- data.frame(
+  Group = 'Total',
+  Variable = names(mean_values),
+  Mean = mean_values,
+  Observations = total_rows
+)
+
+sum_table <- pivot_wider(sum_table, names_from = "Variable", values_from = "Mean")
+
+# Append new_data to sum_table_wide
+sum_table_wide <- rbind(sum_table_wide, sum_table)
+
+```
+
+
+```{r}
+#| echo: false
+#| include: true
+
+sum_table_final <-
+    sum_table_wide |>
+      as_tibble() |>
+      mutate(state = rownames(sum_table_wide)) |>
+      select(Group, Observations, table_size, male, grade, black, hispanic, free)
+
+sum_table_final |>
+  #slice (1:10) |>
+  kable(
+    col.names = c('Group', 'Observations', 'Table Size', 'Percent of boys', 'Grade', 'Black', 'Hispanic', 'Free Lunch'),
+    digits = 3
+  )
+
+```
+
+In the table above, the results are generally consistent across the 4 subgroups, in which there is low variance among the values in the various columns. This more-or-less even distribution of the races, genders and grades of students across tables of varying incentive levels speaks to the efficacy of the randomness that was intended in the original study. In the next section, we will dive into analyzing the correlation of several individual factors and the choices made in stage G2.
+
+# Results {#sec-results}
+
+To determine whether there is a certain characteristic in students that might influence the decision made in stage G2, particularly their grade, gender, or their eligibility for free lunches, we will create bar graphs that group the public data based on each of the isolated factors chosen.
+
+To begin our analysis, we create a graph showing the frequency of students that either switched their final food choice or kept the same food choice, grouped by the grade of the student. This graph gives an overview of the public data across all levels of table incentiveness, in which students were able to make their final choice based on their peers' initial choices and incentive statuses.
+
+```{r}
+#| echo: false
+#| include: true
+
+# Remove all column contains '999'
+food_choices <- public_data |>
+    filter_all(all_vars(. != 999))
+
+# Add a new column named Switched
+food_choices$Switched = ifelse(food_choices$grape == 0 & food_choices$grape2 == 1, "Cookie to Grape",
+                               ifelse(food_choices$grape == 1 & food_choices$grape2 == 0, "Grape to Cookie", "Not Changed"))
+
+# Create a bar plot
+ggplot(food_choices, aes(x = as.factor(grade), fill = Switched)) +
+  geom_bar(position = "dodge") +
+  geom_text(
+    aes(label = after_stat(count)),
+    stat = "count",
+    position = position_dodge(width = 0.9),
+    vjust = -0.5, # Adjust the vertical position of the labels
+    color = "black",
+    size = 3
+  ) +
+  labs(title = "Students Food Choices From Stage G1 to G2",
+       x = "Grade",
+       y = "Number of Observations") +
+  scale_fill_manual(values = c("Cookie to Grape" = "green","Grape to Cookie" = "red", "Not Changed" = "blue")) +
+  scale_x_discrete(breaks = as.character(0:8)) +
+  theme_minimal()
+
+```
+
+It is evident that when aggregating all public tables, including the incentivized and non-incentivized students, that the vast majority of students across each grade kept their initial food choice as their final food choice, and the number of students that switched from one food to the other was fairly even for both scenarios (56 switched from Cookie to Grape, 66 switched from Grape to Cookie). Note, grade 0 represents students in Kindergarten.
+
+To begin the analysis of individual factors to observe their affect on incentivized students choosing grapes or cookies as their final choice, we filter for all incentivized students who kept grapes as their final choice, and grouped the data on those students who are eligible for free lunches. 
+
+```{r}
+#| echo: false
+#| include: true
+
+# Filter data for incentivized students whose grape2 choice was 1
+incentivized_grapes <- food_choices %>%
+  filter(incentive == 1 & grape2 == 1)
+
+# Calculate proportions
+proportions <- incentivized_grapes %>%
+  group_by(free) %>%
+  summarise(Proportion = n() / nrow(incentivized_grapes))
+
+# Create the bar graph
+ggplot(proportions, aes(x = factor(free), y = Proportion, fill = factor(free))) +
+  geom_bar(stat = "identity") +
+  labs(title = "Incentivized Students Choosing Grapes, By Free Lunch Status",
+       x = "Eligible for Free Lunch",
+       y = "Proportion",
+       fill = "Eligible for Free Lunch") +
+  scale_fill_manual(values = c("blue", "red"), labels = c("No", "Yes")) +
+  scale_x_discrete(labels = c("0" = "No", "1" = "Yes")) +  # Adjust x-axis labels + 
+  scale_y_continuous(limits = c(0, 1)) +  # Set y-axis limits + 
+  theme_minimal()
+
+```
+
+The proportion of students choosing the incentivized grapes that are eligible for free lunches is roughly 94% (15/16) based on the heights of the bars compared to the tick marks on the y-axis, which compares to the expected value of 87% since the proportion of all students in public tables whom are eligible for free lunches is 0.87 as shown in Table 1.
+
+Now, we look at the proportion of incentivized students that chose grapes compared to cookies, grouped by grade.
+
+```{r}
+#| echo: false
+#| include: true
+
+# Filter data for incentivized students
+incentivized_students <- food_choices %>%
+  filter(incentive == 1)
+
+# Calculate proportions of students choosing grapes and cookies for each grade
+proportions <- incentivized_students %>%
+  group_by(grade) %>%
+  summarise(
+    grapes_proportion = mean(grape2 == 1),
+    cookies_proportion = mean(grape2 == 0)
+  )
+
+# Reshape the data from wide to long format for plotting
+proportions_long <- proportions %>%
+  tidyr::pivot_longer(cols = c(grapes_proportion, cookies_proportion),
+                      names_to = "choice",
+                      values_to = "proportion")
+
+# Create the bar chart
+ggplot(proportions_long, aes(x = grade, y = proportion, fill = choice)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Incentivized Students' Final Food Choice, By Grade",
+       x = "Grade",
+       y = "Proportion",
+       fill = "Choice") +
+  scale_fill_manual(values = c("grapes_proportion" = "blue", "cookies_proportion" = "red"),
+                    labels = c("Grapes", "Cookies")) +
+  ylim(0,1) +
+  theme_minimal()
+
+```
+
+We observe that for each of the grades K-7, the proportion of students choosing cookies in the final stage is around 60-75%, with the majority of grades being closer to 75%. However, for the highest grade namely grade 8, the proportion of students choosing cookies was less than the proportion of students choosing the incentivized grapes, as only roughly 40% of students chose the cookies. Such a steep drop off compared to all of the lower grades may indicate that the older students are more inclined to choose the food option which also gives them the opportunity to win a prize, and less influenced by the food option itself.
+
+Finally, we look at the proportion of incentivized students that chose grapes compared to cookies, grouped by gender.
+
+```{r}
+#| echo: false
+#| include: true
+
+# Filter data for incentivized students
+incentivized_students <- food_choices %>%
+  filter(incentive == 1)
+
+# Calculate proportions of students choosing grapes and cookies for each gender
+proportions <- incentivized_students %>%
+  group_by(male) %>%
+  summarise(
+    grapes_proportion = mean(grape2 == 1),
+    cookies_proportion = mean(grape2 == 0)
+  )
+
+# Normalize proportions to ensure they sum up to 1 for each gender
+proportions <- proportions %>%
+  mutate(
+    total_proportion = grapes_proportion + cookies_proportion,
+    grapes_proportion = grapes_proportion / total_proportion,
+    cookies_proportion = cookies_proportion / total_proportion
+  )
+
+# Reshape the data from wide to long format for plotting
+proportions_long <- proportions %>%
+  tidyr::pivot_longer(cols = c(grapes_proportion, cookies_proportion),
+                      names_to = "choice",
+                      values_to = "proportion")
+
+# Rename gender values for better visualization
+proportions_long$male <- ifelse(proportions_long$male == 1, "Boys", "Girls")
+
+# Create the bar chart
+ggplot(proportions_long, aes(x = male, y = proportion, fill = choice)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Incentivized Students' Final Food Choice, By Gender",
+       x = "Gender",
+       y = "Proportion",
+       fill = "Choice") +
+  scale_fill_manual(values = c("grapes_proportion" = "blue", "cookies_proportion" = "red"),
+                    labels = c("Grapes", "Cookies")) +
+  ylim(0,1) +
+  theme_minimal()
+
+```
+
+Compared to the other factors analyzed, there appears to be the least variance or impact of final food choice when isolating on the gender of the student, as the proportions of boys and girls choosing the incentivized grapes, respectively, are only off by a few percentage points.
+
+We now move into the Discussion section where we summarize our findings and discuss other biases or factors. 
+
+# Discussion {#sec-discussion}
+
+## First discussion point
+
+Make this point the biggest point, aim for 2 pages if possible. 
 
 ## Second discussion point
 
@@ -150,72 +433,11 @@ If my paper were 10 pages, then should be be at least 2.5 pages. The discussion 
 
 ## Weaknesses and next steps
 
-Weaknesses and next steps should also be included.
-
-\newpage
-
-\appendix
-
-# Appendix {-}
-
-
-# Additional data details
-
-# Model details {#sec-model-details}
-
-## Posterior predictive check
-
-In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
-
-In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
-
-```{r}
-#| eval: true
-#| echo: false
-#| message: false
-#| warning: false
-#| label: fig-ppcheckandposteriorvsprior
-#| layout-ncol: 2
-#| fig-cap: "Examining how the model fits, and is affected by, the data"
-#| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
-
-pp_check(first_model) +
-  theme_classic() +
-  theme(legend.position = "bottom")
-
-posterior_vs_prior(first_model) +
-  theme_minimal() +
-  scale_color_brewer(palette = "Set1") +
-  theme(legend.position = "bottom") +
-  coord_flip()
-```
-
-## Diagnostics
-
-@fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
-
-@fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
-
-```{r}
-#| echo: false
-#| eval: true
-#| message: false
-#| warning: false
-#| label: fig-stanareyouokay
-#| fig-cap: "Checking the convergence of the MCMC algorithm"
-#| fig-subcap: ["Trace plot", "Rhat plot"]
-#| layout-ncol: 2
-
-plot(first_model, "trace")
-
-plot(first_model, "rhat")
-```
-
+Speak about any holes in our analysis or perhaps the original study. One point worth mentioning may be the fact that the study was undertaken in a low-income neighborhood in Chicago. When introducing the incentive factor in the public treatment, the spillover effect may be magnified as these elementary students may be more influenced to alter their final food choice and choose the incentivized grapes, compared to students surveyed in more affluent neighborhoods who may not be as swayed by the option of a prize.
 
 
 \newpage
 
-
-# References
+# References {.unnumbered}
 
 
