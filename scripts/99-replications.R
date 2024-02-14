@@ -1,6 +1,6 @@
 #### Preamble ####
 # Purpose: Replicated graphs from... [...UPDATE THIS...]
-# Author: Samantha Barfoot, Brooklyn Becker, Mehrnoush Mohammadi
+# Author: Samantha Barfoot, Mehrnoush Mohammadi, Brooklin Becker
 # Date: 8 February 2024 
 # Contact: samantha.barfoot@mail.utoronto.ca
 # License: MIT
