@@ -34,8 +34,6 @@ The remainder of this paper is structured as follows. In @sec-data, we compile t
 
 The graphs and tables in this paper were created in R Studio using R [@citeR] and the analysis in a Quarto document. The analysis was conducted with the use of the `ggplot`, `tiddyverse`, `knitr`, `kableExtra`, and `dyplr` packages. The replications of the original graphs and tables were completed with the `semiPar`, `janitor`, `tiddyverse`, `knitr`, and `kableExtra` packages.
 
-Estimand: TBD
-
 # Data {#sec-data}
 
 The original study data included 1631 students, in which the incentive status, public/private status, table size, table incentive proportion, sex, race, eligibility for free lunches, and food choices for both stages G1 and G2 was compiled for each student. By filtering out the original data to only show students who participated in the public treatment, the sample size reduces from 1631 students to 883 students, representing roughly 54% of the original sample size. Below is the table summary of all students in public treatment tables, with a subset of columns displayed representing some of the factors to be analyzed in @sec-results. Comments regarding data cleaning methods are mentioned in @sec-discussion.
@@ -54,6 +52,9 @@ We separated each student into 4 subgroups, based on the following criteria:
 ```{r}
 #| echo: false
 #| include: true
+#| warning: false
+#| label: tbl-table1
+#| tbl-cap: ""
 
 sum_table_wide <-
   read_csv(
@@ -68,7 +69,6 @@ sum_table_final <-
       select(Group, Observations, table_size, male, grade, black, hispanic, free)
 
 sum_table_final |>
-  #slice (1:10) |>
   kable(
     col.names = c('Group', 'Observations', 'Table Size', 'Percent of boys', 'Grade', 'Black', 'Hispanic', 'Free Lunch'),
     digits = 3
@@ -87,6 +87,10 @@ To begin our analysis, we create a graph showing the frequency of students that 
 ```{r}
 #| echo: false
 #| include: true
+#| warning: false
+#| label: fig-foodChoices
+#| fig-cap: "Students food choices from stage G1 to G2 comparing grape to cookie, cookie to grape, or no change."
+
 
 public_data <-
   read_csv(
@@ -116,7 +120,7 @@ ggplot(food_choices, aes(x = as.factor(grade), fill = Switched)) +
   labs(title = "Students Food Choices From Stage G1 to G2",
        x = "Grade",
        y = "Number of Observations") +
-  scale_fill_manual(values = c("Cookie to Grape" = "green","Grape to Cookie" = "red", "Not Changed" = "blue")) +
+  scale_fill_manual(values = c("Cookie to Grape" = '#BDBDBD',"Grape to Cookie" = '#757575', "Not Changed" = '#424242')) +
   scale_x_discrete(breaks = as.character(0:8)) +
   theme_minimal()
 
@@ -129,6 +133,9 @@ To begin the analysis of individual factors to observe their affect on incentivi
 ```{r}
 #| echo: false
 #| include: true
+#| warning: false
+#| label: fig-lunchStatus
+#| fig-cap: "Comparing incentivized students choosing grapes if they are eligible or not eligable for the free lunch program"
 
 # Filter data for incentivized students whose grape2 choice was 1
 incentivized_grapes <- food_choices %>%
@@ -146,9 +153,9 @@ ggplot(proportions, aes(x = factor(free), y = Proportion, fill = factor(free))) 
        x = "Eligible for Free Lunch",
        y = "Proportion",
        fill = "Eligible for Free Lunch") +
-  scale_fill_manual(values = c("blue", "red"), labels = c("No", "Yes")) +
-  scale_x_discrete(labels = c("0" = "No", "1" = "Yes")) +  # Adjust x-axis labels + 
-  scale_y_continuous(limits = c(0, 1)) +  # Set y-axis limits + 
+  scale_fill_manual(values = c('#BDBDBD', '#424242'), labels = c("No", "Yes")) +
+  scale_x_discrete(labels = c("0" = "No", "1" = "Yes")) +  # Adjust x-axis labels  
+  scale_y_continuous(limits = c(0, 1)) +  # Set y-axis limits  
   theme_minimal()
 
 ```
@@ -160,6 +167,9 @@ Now, we look at the proportion of incentivized students that chose grapes compar
 ```{r}
 #| echo: false
 #| include: true
+#| warning: false
+#| label: fig-grade
+#| fig-cap: "Comparing incentivized students choosing grapes or cookies by the students grade"
 
 # Filter data for incentivized students
 incentivized_students <- food_choices %>%
@@ -186,7 +196,7 @@ ggplot(proportions_long, aes(x = grade, y = proportion, fill = choice)) +
        x = "Grade",
        y = "Proportion",
        fill = "Choice") +
-  scale_fill_manual(values = c("grapes_proportion" = "blue", "cookies_proportion" = "red"),
+  scale_fill_manual(values = c("grapes_proportion" = '#BDBDBD', "cookies_proportion" = '#424242'),
                     labels = c("Grapes", "Cookies")) +
   ylim(0,1) +
   theme_minimal()
@@ -200,6 +210,9 @@ Finally, we look at the proportion of incentivized students that chose grapes co
 ```{r}
 #| echo: false
 #| include: true
+#| warning: false
+#| label: fig-gender
+#| fig-cap: "Comparing incentivized students choosing grapes or cookies by the students gender"
 
 # Filter data for incentivized students
 incentivized_students <- food_choices %>%
@@ -237,7 +250,7 @@ ggplot(proportions_long, aes(x = male, y = proportion, fill = choice)) +
        x = "Gender",
        y = "Proportion",
        fill = "Choice") +
-  scale_fill_manual(values = c("grapes_proportion" = "blue", "cookies_proportion" = "red"),
+  scale_fill_manual(values = c("grapes_proportion" = '#BDBDBD', "cookies_proportion" = '#424242'),
                     labels = c("Grapes", "Cookies")) +
   ylim(0,1) +
   theme_minimal()
