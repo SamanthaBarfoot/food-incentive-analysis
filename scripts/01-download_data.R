@@ -19,5 +19,5 @@ raw_food <-
 #### Save data and convert to csv ####
 write_csv(
   x = raw_food,
-  file = "outputs/data/food_data.csv"
+  file = "inputs/data/food_data.csv"
 )

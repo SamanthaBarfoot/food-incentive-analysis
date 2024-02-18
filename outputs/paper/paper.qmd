@@ -90,7 +90,6 @@ To begin our analysis, we create a graph showing the frequency of students that 
 #| label: fig-foodChoices
 #| fig-cap: ": Students food choices from stage G1 to G2 comparing grape to cookie, cookie to grape, or no change."
 
-
 food_choices <-
   read_csv(
     file = "../data/food_choices.csv",

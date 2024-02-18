@@ -16,7 +16,7 @@ library(dplyr)
 #### Load Data ####
 incentive_data <-
   read_csv(
-    file = "outputs/data/food_data.csv",
+    file = "inputs/data/food_data.csv",
     show_col_types = FALSE,
   )
 
