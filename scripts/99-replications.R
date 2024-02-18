@@ -1,10 +1,9 @@
 #### Preamble ####
-# Purpose: Replicated graphs from... [...UPDATE THIS...]
+# Purpose: Replicated graphs from Incentives and Unintended Consequences: Spillover Effects in Food Choice by Angelucci, Manuela, Silvia Prina, Heather Royer, and Anya Samek
 # Author: Samantha Barfoot, Mehrnoush Mohammadi, Brooklin Becker
 # Date: 8 February 2024 
 # Contact: samantha.barfoot@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: [...UPDATE THIS...]
 
 #### Workspace setup ####
 library(tidyverse)
@@ -16,9 +15,8 @@ library(janitor)
 #### Load Data ####
 incentive_data <-
   read_csv(
-    file = "data/analysis_data/food_data.csv",
+    file = "outputs/data/food_data.csv",
     show_col_types = FALSE,
-    # skip = 1
   )
 
 # Filter data for Figure 2 and 3
@@ -32,7 +30,7 @@ public_data <- incentive_data|>
 # To do: currently using Semipar library to replicate the semiparametic regression 
 #       mentioned in the orignal paper; this could be tuned further to look more similar to the paper
 
-pdf("paper/replications/Figure2.pdf")
+pdf("outputs/paper/replications/Figure2.pdf")
 
 attach(private_data)
 fit_private_grape2 <- spm(grape2~f(table_incentive_pr), family = "gaussian", spar.method = "ML")
@@ -58,7 +56,7 @@ dev.off()
 # To do: currently using Semipar library to replicate the semiparametic regression
 #       mentioned in the orignal paper; this could be tuned further to look more similar to the paper
 
-pdf("paper/replications/Figure3.pdf")
+pdf("outputs/paper/replications/Figure3.pdf")
 
 attach(private_data)
 fit_private_grape <- spm(grape~f(table_incentive_pr), family = "gaussian", spar.method = "ML")

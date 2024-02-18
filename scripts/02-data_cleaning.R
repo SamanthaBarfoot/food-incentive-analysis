@@ -4,7 +4,7 @@
 # Date: 6 April 2023 [...UPDATE THIS...]
 # Contact: samantha.barfoot@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: download data from American Economic Association
+# Pre-requisites: need to have run 01-download_data.R
 
 
 #### Workspace setup ####
@@ -16,9 +16,8 @@ library(dplyr)
 #### Load Data ####
 incentive_data <-
   read_csv(
-    file = "data/analysis_data/food_data.csv",
+    file = "outputs/data/food_data.csv",
     show_col_types = FALSE,
-    # skip = 1
   )
 
 # Filter data for only public treatment tables
@@ -175,10 +174,10 @@ sum_table_wide <- rbind(sum_table_wide, sum_table)
 #### Save data ####
 write_csv(
   x = sum_table_wide,
-  file = "data/analysis_data/sum_table_wide.csv"
+  file = "outputs/data/sum_table_wide.csv"
 )
 
 write_csv(
   x = public_data,
-  file = "data/analysis_data/public_data.csv"
+  file = "outputs/data/public_data.csv"
 )

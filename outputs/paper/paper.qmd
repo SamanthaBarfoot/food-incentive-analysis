@@ -58,7 +58,7 @@ We separated each student into 4 subgroups, based on the following criteria:
 
 sum_table_wide <-
   read_csv(
-    file = "../data/analysis_data/sum_table_wide.csv",
+    file = "../data/sum_table_wide.csv",
     show_col_types = FALSE
   )
 
@@ -86,15 +86,14 @@ To begin our analysis, we create a graph showing the frequency of students that 
 
 ```{r}
 #| echo: false
-#| include: true
 #| warning: false
 #| label: fig-foodChoices
-#| fig-cap: "Students food choices from stage G1 to G2 comparing grape to cookie, cookie to grape, or no change."
+#| fig-cap: ": Students food choices from stage G1 to G2 comparing grape to cookie, cookie to grape, or no change."
 
 
 public_data <-
   read_csv(
-    file = "../data/analysis_data/public_data.csv",
+    file = "../data/public_data.csv",
     show_col_types = FALSE
   )
 
@@ -135,7 +134,7 @@ To begin the analysis of individual factors to observe their affect on incentivi
 #| include: true
 #| warning: false
 #| label: fig-lunchStatus
-#| fig-cap: "Comparing incentivized students choosing grapes if they are eligible or not eligable for the free lunch program"
+#| fig-cap: ": Comparing incentivized students choosing grapes if they are eligible or not eligable for the free lunch program"
 
 # Filter data for incentivized students whose grape2 choice was 1
 incentivized_grapes <- food_choices %>%
@@ -169,7 +168,7 @@ Now, we look at the proportion of incentivized students that chose grapes compar
 #| include: true
 #| warning: false
 #| label: fig-grade
-#| fig-cap: "Comparing incentivized students choosing grapes or cookies by the students grade"
+#| fig-cap: ": Comparing incentivized students choosing grapes or cookies by the students grade"
 
 # Filter data for incentivized students
 incentivized_students <- food_choices %>%
@@ -212,7 +211,7 @@ Finally, we look at the proportion of incentivized students that chose grapes co
 #| include: true
 #| warning: false
 #| label: fig-gender
-#| fig-cap: "Comparing incentivized students choosing grapes or cookies by the students gender"
+#| fig-cap: ": Comparing incentivized students choosing grapes or cookies by the students gender"
 
 # Filter data for incentivized students
 incentivized_students <- food_choices %>%
