@@ -1,5 +1,5 @@
 ---
-title: "My title"
+title: "gender and age in food incentive"
 author: 
   - Sam Barfoot
   - Brooklin Becker
@@ -91,19 +91,11 @@ To begin our analysis, we create a graph showing the frequency of students that 
 #| fig-cap: ": Students food choices from stage G1 to G2 comparing grape to cookie, cookie to grape, or no change."
 
 
-public_data <-
+food_choices <-
   read_csv(
-    file = "../data/public_data.csv",
+    file = "../data/food_choices.csv",
     show_col_types = FALSE
   )
-
-# Remove all column contains '999'
-food_choices <- public_data |>
-    filter_all(all_vars(. != 999))
-
-# Add a new column named Switched
-food_choices$Switched = ifelse(food_choices$grape == 0 & food_choices$grape2 == 1, "Cookie to Grape",
-                               ifelse(food_choices$grape == 1 & food_choices$grape2 == 0, "Grape to Cookie", "Not Changed"))
 
 # Create a bar plot
 ggplot(food_choices, aes(x = as.factor(grade), fill = Switched)) +

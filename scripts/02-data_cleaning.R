@@ -20,11 +20,20 @@ incentive_data <-
     show_col_types = FALSE,
   )
 
+#### Clean data ####
+
 # Filter data for only public treatment tables
 public_data <- incentive_data|>
   filter(private == 0)
 
-#### Clean data ####
+# Remove all column containing '999'
+food_choices <- public_data |>
+  filter_all(all_vars(. != 999))
+
+# Add a new column named Switched
+food_choices$Switched = ifelse(food_choices$grape == 0 & food_choices$grape2 == 1, "Cookie to Grape",
+                               ifelse(food_choices$grape == 1 & food_choices$grape2 == 0, "Grape to Cookie", "Not Changed"))
+
 #https://tellingstorieswithdata.com/11-eda.html#united-states-population-and-income-data
 incentive_data_sum <-
   incentive_data |>
@@ -178,6 +187,6 @@ write_csv(
 )
 
 write_csv(
-  x = public_data,
-  file = "outputs/data/public_data.csv"
+  x = food_choices,
+  file = "outputs/data/food_choices.csv"
 )
