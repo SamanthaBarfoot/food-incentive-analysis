@@ -138,6 +138,11 @@ proportions <- incentivized_grapes %>%
 # Create the bar graph
 ggplot(proportions, aes(x = factor(free), y = Proportion, fill = factor(free))) +
   geom_bar(stat = "identity") +
+  geom_text(aes(label = round(Proportion, 2)), 
+            position = position_dodge(width = 0.9), 
+            vjust = -0.5, # Adjust the vertical position of the labels
+            color = "black",
+            size = 3) +
   labs(x = "Eligible for Free Lunch",
        y = "Proportion",
        fill = "Eligible for Free Lunch") +
@@ -233,6 +238,11 @@ proportions_long$male <- ifelse(proportions_long$male == 1, "Boys", "Girls")
 # Create the bar chart
 ggplot(proportions_long, aes(x = male, y = proportion, fill = choice)) +
   geom_bar(stat = "identity", position = "dodge") +
+  geom_text(aes(label = round(proportion, 2)), # Display proportion rounded to 2 decimal places
+            position = position_dodge(width = 0.9), 
+            vjust = -0.5, # Adjust the vertical position of the labels
+            color = "black",
+            size = 3) +
   labs(x = "Gender",
        y = "Proportion",
        fill = "Choice") +
