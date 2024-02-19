@@ -12,6 +12,7 @@ library(janitor)
 #### Simulate data ####
 set.seed(1)
 
+#variable that represents the number of columns in the simulated data set
 num_samples <- 800
 
 simulated_data <-
@@ -168,12 +169,18 @@ simulated_data <-
       x = c("Not Changed", "Cookie to Grape","Grape to Cookie"),
       size = num_samples,
       replace = TRUE
+    ),
+    "Stayed" = sample(
+      x = c("Changed", "Stayed Cookie","Stayed Grape"),
+      size = num_samples,
+      replace = TRUE
     )
   )
 
-
+#variable that represents the number of columns in the table
 num_samples <- 5
 
+#creates a tibble to simulate the data sum_wide_table dataset
 simulated_data <-
   tibble(
     # Randomly pick an option, with replacement 5 times

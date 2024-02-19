@@ -34,6 +34,10 @@ food_choices <- public_data |>
 food_choices$Switched = ifelse(food_choices$grape == 0 & food_choices$grape2 == 1, "Cookie to Grape",
                                ifelse(food_choices$grape == 1 & food_choices$grape2 == 0, "Grape to Cookie", "Not Changed"))
 
+# Add a new column named Stayed
+food_choices$Stayed = ifelse(food_choices$grape == 0 & food_choices$grape2 == 0, "Stayed Cookie",
+                               ifelse(food_choices$grape == 1 & food_choices$grape2 == 1, "Stayed Grape", "Changed"))
+
 #https://tellingstorieswithdata.com/11-eda.html#united-states-population-and-income-data
 incentive_data_sum <-
   incentive_data |>
@@ -178,6 +182,7 @@ sum_table <- pivot_wider(sum_table, names_from = "Variable", values_from = "Mean
 
 # Append new_data to sum_table_wide
 sum_table_wide <- rbind(sum_table_wide, sum_table) 
+
 
 
 #### Save data ####

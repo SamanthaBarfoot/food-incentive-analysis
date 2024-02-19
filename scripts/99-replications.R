@@ -4,6 +4,7 @@
 # Date: 8 February 2024 
 # Contact: samantha.barfoot@mail.utoronto.ca
 # License: MIT
+# Pre-requisites: Run the script 01-download_data.R
 
 #### Workspace setup ####
 library(tidyverse)
@@ -79,7 +80,7 @@ legend(x = "topleft", legend = c("Private", "Public"), lty = c(2, 2), col = c("l
 dev.off()
 
 ### Replicate Table 1 ###
-
+# Uses a tibble to create a table 
 table1 <- incentive_data |>
   tibble()|>
   select(table_incentive_pr,incentive) |>
