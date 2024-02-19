@@ -17,4 +17,4 @@ The repo is structured as:
 
 ## Statement on LLM usage
 
-No LLMs were used in the analysis, replication, or reporduction of this paper.
+Some LLMs were used in this paper and code. Transcripts from chatGPT can be found in `inputs/LLM`
