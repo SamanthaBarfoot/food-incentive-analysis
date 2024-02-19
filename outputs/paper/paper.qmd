@@ -54,7 +54,8 @@ We separated each student into 4 subgroups, based on the following criteria:
 #| include: true
 #| warning: false
 #| label: tbl-table1
-#| tbl-cap: ""
+#| tbl-cap: "Summary statistics for the four different observation groups: public and 0% of the card deck is incentivized, public and 50% of the card deck is incentivized where the student is not incentivized, public and 50% of the card deck is incentivized where the student is incentivized, and public and 100% of the card deck is incentivized"
+
 
 sum_table_wide <-
   read_csv(
@@ -107,8 +108,7 @@ ggplot(food_choices, aes(x = as.factor(grade), fill = Switched)) +
     color = "black",
     size = 3
   ) +
-  labs(title = "Students Food Choices From Stage G1 to G2",
-       x = "Grade",
+  labs(x = "Grade",
        y = "Number of Observations") +
   scale_fill_manual(values = c("Cookie to Grape" = '#BDBDBD',"Grape to Cookie" = '#757575', "Not Changed" = '#424242')) +
   scale_x_discrete(breaks = as.character(0:8)) +
@@ -139,8 +139,7 @@ proportions <- incentivized_grapes %>%
 # Create the bar graph
 ggplot(proportions, aes(x = factor(free), y = Proportion, fill = factor(free))) +
   geom_bar(stat = "identity") +
-  labs(title = "Incentivized Students Choosing Grapes, By Free Lunch Status",
-       x = "Eligible for Free Lunch",
+  labs(x = "Eligible for Free Lunch",
        y = "Proportion",
        fill = "Eligible for Free Lunch") +
   scale_fill_manual(values = c('#BDBDBD', '#424242'), labels = c("No", "Yes")) +
@@ -182,8 +181,7 @@ proportions_long <- proportions %>%
 # Create the bar chart
 ggplot(proportions_long, aes(x = grade, y = proportion, fill = choice)) +
   geom_bar(stat = "identity", position = "dodge") +
-  labs(title = "Incentivized Students' Final Food Choice, By Grade",
-       x = "Grade",
+  labs(x = "Grade",
        y = "Proportion",
        fill = "Choice") +
   scale_fill_manual(values = c("grapes_proportion" = '#BDBDBD', "cookies_proportion" = '#424242'),
@@ -236,8 +234,7 @@ proportions_long$male <- ifelse(proportions_long$male == 1, "Boys", "Girls")
 # Create the bar chart
 ggplot(proportions_long, aes(x = male, y = proportion, fill = choice)) +
   geom_bar(stat = "identity", position = "dodge") +
-  labs(title = "Incentivized Students' Final Food Choice, By Gender",
-       x = "Gender",
+  labs(x = "Gender",
        y = "Proportion",
        fill = "Choice") +
   scale_fill_manual(values = c("grapes_proportion" = '#BDBDBD', "cookies_proportion" = '#424242'),
