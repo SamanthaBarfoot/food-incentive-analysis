@@ -1,6 +1,4 @@
-# Paper Title
-work in progress
-
+# Gender, Age, and Peer Influence in Food Incentive
 ## Abstract
 work in progress
 
@@ -17,4 +15,4 @@ The repo is structured as:
 
 ## Statement on LLM usage
 
-Some LLMs were used in this paper and code. Transcripts from ChatGPT can be found in `inputs/LLM`
+Statement on LLM usage: Aspects of the code were written with the help of the autocomplete tool, ChatGPT. The entire chat history is available in `inputs/LLM/usage.txt`
