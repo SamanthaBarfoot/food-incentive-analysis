@@ -4,7 +4,7 @@
 # Date: 13 February 2024 
 # Contact: samantha.barfoot@mail.utoronto.ca
 # License: MIT
-
+# need to have run 01-download_data.R
 
 #### Workspace setup ####
 library(tidyverse)
@@ -19,6 +19,7 @@ food_choices <-
     show_col_types = FALSE
   )
 
+#read in the data 
 sum_table_wide <-
   read_csv(
     file = "outputs/data/sum_table_wide.csv",

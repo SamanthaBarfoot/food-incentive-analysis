@@ -1,5 +1,5 @@
 #### Preamble ####
-# Purpose: Cleans the raw plane data recorded by Three observers
+# Purpose: Cleans the raw data compiled by the original papers researchers
 # Author: Samantha Barfoot, Mehrnoush Mohammadi, Brooklin Becker
 # Date: 13 February 2024
 # Contact: samantha.barfoot@mail.utoronto.ca

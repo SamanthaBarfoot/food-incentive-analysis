@@ -1,5 +1,5 @@
 #### Preamble ####
-# Purpose: Simulates food incentive data
+# Purpose: Simulates food incentive data for the two datasets sum_table_wide and food_choices
 # Author: Samantha Barfoot, Mehrnoush Mohammadi, Brooklin Becker
 # Date: 13 February 2024 
 # Contact: samantha.barfoot@mail.utoronto.ca
@@ -15,6 +15,7 @@ set.seed(1)
 #variable that represents the number of columns in the simulated data set
 num_samples <- 800
 
+#simulated tibble table
 simulated_data <-
   tibble(
     # Randomly pick an option, with replacement, 153 times
