@@ -1,7 +1,7 @@
 #### Preamble ####
-# Purpose: Cleans the raw plane data recorded by two observers..... [...UPDATE THIS...]
+# Purpose: Cleans the raw plane data recorded by Three observers
 # Author: Samantha Barfoot, Mehrnoush Mohammadi, Brooklin Becker
-# Date: 6 April 2023 [...UPDATE THIS...]
+# Date: 13 February 2024
 # Contact: samantha.barfoot@mail.utoronto.ca
 # License: MIT
 # Pre-requisites: need to have run 01-download_data.R
@@ -38,7 +38,7 @@ food_choices$Switched = ifelse(food_choices$grape == 0 & food_choices$grape2 == 
 food_choices$Stayed = ifelse(food_choices$grape == 0 & food_choices$grape2 == 0, "Stayed Cookie",
                                ifelse(food_choices$grape == 1 & food_choices$grape2 == 1, "Stayed Grape", "Changed"))
 
-#https://tellingstorieswithdata.com/11-eda.html#united-states-population-and-income-data
+#the incentive_data_sum tibble will contain the selected columns from the original incentive_data dataset, with an additional state column representing the row names.
 incentive_data_sum <-
   incentive_data |>
   as_tibble() |>
@@ -71,6 +71,7 @@ sum_table <- data.frame(
   Mean = mean_values,
   Observations = total_rows
 )
+# Reshapes the data frame from long to wide format. This means it takes data that is currently represented in a tall, skinny format (with many rows and few columns) and spreads it out into a wide format (with fewer rows and more columns)
 sum_table_wide <- pivot_wider(sum_table, names_from = "Variable", values_from = "Mean")
 
 # ---------
@@ -96,6 +97,7 @@ sum_table <- data.frame(
   Observations = total_rows
 )
 
+# Reshapes the data frame from long to wide format. This means it takes data that is currently represented in a tall, skinny format (with many rows and few columns) and spreads it out into a wide format (with fewer rows and more columns)
 sum_table <- pivot_wider(sum_table, names_from = "Variable", values_from = "Mean")
 
 # Append sum_table to sum_table_wide
@@ -124,7 +126,7 @@ sum_table <- data.frame(
   Mean = mean_values,
   Observations = total_rows
 )
-
+# reshapes the data frame from long to wide format. This means it takes data that is currently represented in a tall, skinny format (with many rows and few columns) and spreads it out into a wide format (with fewer rows and more columns)
 sum_table <- pivot_wider(sum_table, names_from = "Variable", values_from = "Mean")
 
 # Append new_data to sum_table_wide
@@ -152,7 +154,7 @@ sum_table <- data.frame(
   Mean = mean_values,
   Observations = total_rows
 )
-
+#reshapes the data frame from long to wide format. This means it takes data that is currently represented in a tall, skinny format (with many rows and few columns) and spreads it out into a wide format (with fewer rows and more columns)
 sum_table <- pivot_wider(sum_table, names_from = "Variable", values_from = "Mean")
 
 # Append new_data to sum_table_wide
@@ -160,8 +162,10 @@ sum_table_wide <- rbind(sum_table_wide, sum_table)
 
 #----------
 
+# Combining data frames that have the same columns and represent different subsets of the same dataset, allowing for easier analysis and comparison.
 combined_table <- rbind(public_0_no_incentive, public_50_no_incentive, Public_50_incentive, Public_100_incentive)
 
+# calculates the column means of the combined_table data frame using the colMeans() function.
 mean_values <- colMeans(combined_table, na.rm = TRUE)
 
 # Round mean values to two decimal places
@@ -177,7 +181,7 @@ sum_table <- data.frame(
   Mean = mean_values,
   Observations = total_rows
 )
-
+#  Reshape the sum_table data frame from long to wide format. 
 sum_table <- pivot_wider(sum_table, names_from = "Variable", values_from = "Mean")
 
 # Append new_data to sum_table_wide
