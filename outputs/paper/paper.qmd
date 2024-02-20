@@ -317,7 +317,7 @@ ggplot(public_no_incentives, aes(x = Stayed, y = prop, fill = Stayed)) +
   labs(x = "Choice",
        y = "Proportion") +
   scale_fill_manual(values = c("Changed" = '#BDBDBD', "Stayed Cookie" = '#757575', "Stayed Grape" = '#424242')) +
-  ylim(0,0.5) +
+  ylim(0,0.6) +
   theme_minimal()
 ```
 
