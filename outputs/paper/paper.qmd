@@ -1,10 +1,10 @@
 ---
-title: "gender and age in food incentive"
+title: "Gender, Age, and Peer Influence in Food Incentive"
 author: 
   - Samantha Barfoot
   - Brooklin Becker
   - Mehrnoush Mohammadi
-thanks: "Code and data are available at: https://github.com/SamanthaBarfoot/food-incentive-analysis.git"
+thanks: "Code and data are available at: https://github.com/SamanthaBarfoot/food-incentive-analysis.git The Social Science Reproduction DOI is: https://doi.org/10.48152/ssrp-s4sw-c494"
 date: today
 date-format: long
 abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
