@@ -32,7 +32,7 @@ In this paper, we will provide a deeper analysis and reproduction of the paper, 
 
 The remainder of this paper is structured as follows. In @sec-data, we compile the subset of data that strictly includes the students that took part in the public treatment study and not the private treatment study. Students were offered more information to advise their final decisions by being able to see the incentive status of their peers. In @sec-results, we dive deeper into analyzing possible factors that may influence a student's final food choice in stage G2. We leverage `ggplot2` by creating bar graphs to represent the grouped data for the various factors that were analyzed. Finally, in @sec-discussion, we summarize our results and also identify other factors or biases that may have affected the results, on a qualitative or quantitative level.
 
-The graphs and tables in this paper were created in R Studio using R [@citeR] and the analysis in a Quarto document. The analysis was conducted with the use of the `ggplot`, `tiddyverse`, `knitr`, `kableExtra`, and `dyplr` packages. The replications of the original graphs and tables were completed with the `semiPar`, `janitor`, `tiddyverse`, `knitr`, and `kableExtra` packages.
+The graphs and tables in this paper were created in R Studio using R [@citeR] and the analysis in a Quarto document. The analysis was conducted with the use of the `ggplot` [@ggplotRef], `tiddyverse` [@tidyverseRef], `knitr` [@knitrRef], `kableExtra` [@kableextraRef], and `dyplr` [@dplRef ] packages. The replications of the original graphs and tables were completed with the `semiPar` [@semiParRef], `janitor` [@janitorRef], `tiddyverse` [@tidyverseRef], `knitr` [@knitrRef], `tibble` [@tibbleRef], and `kableExtra` [@kableextraRef] packages.
 
 # Data {#sec-data}
 
@@ -262,7 +262,7 @@ ggplot(proportions_long, aes(x = male, y = proportion, fill = choice)) +
 #| echo: false
 #| include: true
 #| warning: false
-#| label: fig-publicIncentive
+#| label: fig-publicNoIncentive
 #| fig-cap: "Comparing the proportion of students in the public group who recieved no incentive and whether or not they stayed with their initil choice of cookie or grape or if they switched."
 
 public_incentives <- food_choices|>
@@ -295,7 +295,7 @@ ggplot(public_incentives, aes(x = Stayed, y = prop, fill = Stayed)) +
 #| echo: false
 #| include: true
 #| warning: false
-#| label: fig-publicNoIncentive
+#| label: fig-publicIncentive
 #| fig-cap: "Comparing the proportion of students in the public group who recieved an incentive and whether or not they stayed with their initil choice of cookie or grape or if they switched."
 
 public_no_incentives <- food_choices|>

@@ -6,7 +6,6 @@
 # License: MIT
 # Pre-requisites: need to have run 01-download_data.R
 
-
 #### Workspace setup ####
 library(tidyverse)
 library(knitr)
@@ -186,8 +185,6 @@ sum_table <- pivot_wider(sum_table, names_from = "Variable", values_from = "Mean
 
 # Append new_data to sum_table_wide
 sum_table_wide <- rbind(sum_table_wide, sum_table) 
-
-
 
 #### Save data ####
 write_csv(
