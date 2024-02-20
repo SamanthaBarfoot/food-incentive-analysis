@@ -87,7 +87,7 @@ To determine whether there is a certain characteristic in students that might in
 To begin our analysis, we created a graph, @fig-foodChoices, of the frequency of students that either switched their final food choice or kept the same food choice, grouped by the grade of the student. Grade 0 represents students in kindergarten. @fig-foodChoices gives an overview of the public data across all levels of table incentivises, in which students were able to make their final choice based on their peers' initial choices and incentive statuses.
 \newpage
 
-```{r}
+```{r, out.width="105%"}
 #| echo: false
 #| warning: false
 #| label: fig-foodChoices
@@ -108,10 +108,11 @@ ggplot(food_choices, aes(x = as.factor(grade), fill = Switched)) +
     position = position_dodge(width = 0.9),
     vjust = -0.5, # Adjust the vertical position of the labels
     color = "black",
-    size = 3
+    size = 2
   ) +
   labs(x = "Grade",
-       y = "Number of Observations") +
+       y = "Number of Observations",
+       fill = " ") +
   scale_fill_manual(values = c("Cookie to Grape" = '#BDBDBD',"Grape to Cookie" = '#757575', "Not Changed" = '#424242')) +
   scale_x_discrete(breaks = as.character(0:8)) +
   theme_minimal()
