@@ -157,7 +157,7 @@ ggplot(proportions, aes(x = factor(free), y = Proportion, fill = factor(free))) 
 
 ```
 
-We can see in @fig-lunchStatus that the proportion of students choosing the incentivized grapes that are eligible for free lunches is roughly 94% (15/16). We can compare this to the expected value of 87% since the proportion of all students in public tables whom are eligible for free lunches is 0.87 as shown in @tbl-table1.
+We can see in @fig-lunchStatus that the proportion of students choosing the incentivized grapes that are eligible for free lunches is 94%. We can compare this to the expected value of 86% since the proportion of all students in public tables whom are eligible for free lunches is 0.86 as shown in @tbl-table1.
 
 We can also examine the proportion of incentivized students that chose grapes compared to cookies, grouped by grade in @fig-grade.
 
@@ -258,6 +258,8 @@ ggplot(proportions_long, aes(x = male, y = proportion, fill = choice)) +
 
 ```
 
+We will now also create two grouped bar graphs which show the progression of the students' food choices from stage 1 to stage 2; first for public, non-incentivized students, then followed by a graph for public, incentivized students.
+
 ```{r}
 #| echo: false
 #| include: true
@@ -290,6 +292,7 @@ ggplot(public_incentives, aes(x = Stayed, y = prop, fill = Stayed)) +
 
 ```
 
+\newpage
 
 ```{r}
 #| echo: false
@@ -322,15 +325,41 @@ ggplot(public_no_incentives, aes(x = Stayed, y = prop, fill = Stayed)) +
   theme_minimal()
 ```
 
+We view from these two graphs that the impact of incentivization leads to a higher proportion of students who choose the grapes in the final stage compared to the cookies. We will discuss this further in the discussion section.
+
 # Discussion {#sec-discussion}
 
-## First discussion point
+## Gender, Age, and Free Lunch Eligibility Influences on Food Choice
 
-Make this point the biggest point, aim for 2 pages if possible. 
+This paper replicated and reproduced certain aspects of the paper *Incentives and Unintended Consequences: Spillover Effects in Food Choice* [@angelucci_incentives_2019]. @fig-lunchStatus and @fig-grade were replicated using the original raw data provided in the replication package as well as Table 1. We discussed the original study and how they conducted their research as well as their original conclusions. 
 
-## Second discussion point
+The purpose of our paper was to analyze the influence that age, gender, and free lunch eligibility may have had on a student’s food choice in a public setting where other peers’ choices and incentive status were visible to all students at the table. Incentive status plays an important role in affecting each student’s food choice decision, as the possibility to win a prize is offered to an incentivized student when that student chooses grapes. The results of these individual analyses are mentioned in the Results section. To begin the discussion of our analyses, we will first look at the results for @fig-lunchStatus, in which the impact of free lunch eligibility on incentivized students’ food choices is analyzed. 
 
-## Third discussion point
+In @fig-lunchStatus, we observed that the proportion of all incentivized students with free lunch eligibility who chose the grapes was 94%. This amount exceeded the expected proportion of 86%, which is the proportion of all students with free lunch eligibility who participated in the public setting. One assumption for this higher weighting in students with free lunch eligibility choosing the incentivized grapes, is that these students represent the lowest-income demographic of the student body, which is already located in a low-income neighborhood in Chicago. For students who already receive free lunches from the school on a daily basis, the difference in taste or nutritional value between the cookies and grapes may take a backseat to the appeal of potentially winning a prize, simply by choosing the grapes over the cookies.
+
+Next, we discuss the results for @fig-grade, in which the impact of grade on incentivized students’ food choices is analyzed.
+
+In @fig-grade, we can observe that most students from kindergarten to grade 7 selected cookies as their food choice in the final stage of the study. Meanwhile, students in the oldest age group, the grade 8 students, were the only age group to have more students select grapes as their food choice. As well, the grade 6 students had the second highest proportion of grapes chosen after the grade 8 students. This might imply that either the oldest students were more influenced by the potential of winning a prize, or simply value the nutritional aspect of the grapes over the cookies, separate from the prospect of winning a prize. Additionally, the kindergarten students had the lowest proportion of students selecting cookies as their food choice. The grade 8 students also had one of the largest percentages of the age groups where the students did not change their food choice at 91%. Whereas, the younger grades had more students choosing to switch their food choices. Only 84% of kindergarteners, 79% of 1st graders, and 77% of 3rd graders kept their initial choice. 
+
+Finally, we discuss the results for @fig-gender, in which the impact of gender on incentivized students’ food choices is analyzed.
+
+In @fig-gender, we noticed that gender did not play nearly as much of a role in food choice as grade or free lunch eligibility did. There was very little difference between the tendencies of grape or cookie choice between the boys and the girls, evident in the fact that 31% of boys chose the incentivized grapes and 35% of girls chose the incentivized grapes. In the experiment, the frequency of public/private setting, incentivized levels, and distribution of incentiveness was completely randomized for all students, regardless of their gender or other identifying characteristics. Students were able to choose, to some degree, which other students would sit at their table. It is likely that for the most part, boys would choose their male friends to sit with them, and girls would choose their female friends to sit with them. Thus, the tendencies of students who made their decisions based on incentive status, personal preference, and perhaps peer pressure from their friends, would have been structurally similar for both boys and girls.
+
+In summary, we analyzed the final food choices of public, incentivized students by their free lunch eligibility, grade, and gender. For free lunch eligibility, there was some significance observed in the proportion of incentivized students choosing grapes (94% eligible for free lunches), compared to the expected amount of 86% students being eligible for free lunches. For grade, there was some significance observed in the grade 8 students choosing grapes at a much higher rate compared to all previous grades, along with the grade 6 students choosing grapes at the second highest proportion relative to their grade, implying some correlation between maturity (or simply older age) and the choice of incentivized grapes. Finally, for gender, there was no significance observed in the tendencies of boys and girls choosing the incentivized grapes.
+
+## Progression of Non-incentivized Student Food Choices
+
+To analyze the potential influences of incentivization on students’ final food choices from a less granular or more general overview, we will discuss the results for @fig-publicNoIncentive, in which we categorized all non-incentivized students based on the progression of their food choice from stage 1 to stage 2. There were three groups that these non-incentivized students were binned to: 1) Students who changed from cookie to grape or grape to cookie, 2) Students who stayed with cookies, and 3) Students who stayed with grapes. 
+
+This graph is important because this data includes only students who didn’t have the opportunity to win a prize regardless of their food choice, which meant that students chose the food that they wanted to eat separate from any incentive. @fig-publicNoIncentive indicates that almost half of these students (47%) chose cookies from the start and stayed with their decision. This was 11% higher than the proportion of students that stuck with their choice of grapes. As a contrast, only 16% of public, non-incentivized students changed their decision after viewing the food choices of other students at their tables. This may be due to the students having a change of appetite, or due to seeing their friends/peers choosing a different food which influenced them to change their choice. Note, that these three percentages add up to 99% due to individual rounding.
+
+## Progression of Incentivized Student Food Choices
+
+We now discuss the results for @fig-publicIncentive, in which we categorized all incentivized students based on the progression of their food choice from stage 1 to stage 2. Similar to @fig-publicNoIncentive, there were three groups that these incentivized students were binned to: 1) Students who changed from cookie to grape or grape to cookie, 2) Students who stayed with cookies, and 3) Students who stayed with grapes.
+
+This graph is equally as important to consider as @fig-publicNoIncentive because this data includes only public, incentivized students who had the opportunity to win a prize by choosing the incentivized grapes instead of the cookies. @fig-publicIncentive indicates that more than half of these students (54%) chose grapes from the start and stayed with their decision,which was 22% higher than the proportion of students sticking with their choice of cookies.
+
+As a comparison to the previous discussion point, we are able to see the impact of incentivization more clearly on students’ final decision to stay with the incentivized grapes compared to staying with the non-incentivized cookies. This graph also shows that only 14% of students made a change after seeing what food their peers chose. This proportion is even lower than observed in @fig-publicNoIncentive where 16% of students changed their food choice, meaning that incentivized students were slightly more likely to stay with their initial decision. As these students already had to weigh the benefits of choosing the incentivized grapes in the initial stage before even viewing their peers’ choices, and also weigh these benefits with their personal preference for grapes and cookies, it is conceivable that they would be more confident in maintaining their initial food choice.
 
 ## Weaknesses and next steps
 
