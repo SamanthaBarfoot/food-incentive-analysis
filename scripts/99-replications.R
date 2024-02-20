@@ -1,5 +1,5 @@
 #### Preamble ####
-# Purpose: Replicated graphs from Incentives and Unintended Consequences: Spillover Effects in Food Choice by Angelucci, Manuela, Silvia Prina, Heather Royer, and Anya Samek
+# Purpose: Replicated graphs and tables from Incentives and Unintended Consequences: Spillover Effects in Food Choice by Angelucci, Manuela, Silvia Prina, Heather Royer, and Anya Samek
 # Author: Samantha Barfoot, Mehrnoush Mohammadi, Brooklin Becker
 # Date: 8 February 2024 
 # Contact: samantha.barfoot@mail.utoronto.ca

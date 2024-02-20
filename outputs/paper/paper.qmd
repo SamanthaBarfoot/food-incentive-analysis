@@ -10,6 +10,7 @@ date-format: long
 abstract: "This paper provides a detailed synthesis and replication of the original study, Incentives and Unintended Consequences: Spillover Effects in Food Choice (Angelucci et al. 2019). The original study involved 1631 students from a low-income area of Chicago, IL, aiming to examine spillover effects in incentivization. The study divided students into public and private treatments while exploring various factors such as grade, gender, and eligibility for free lunches. This paper's analysis delves into how these factors intersect with incentivization outcomes. Findings reveal nuanced influences; for instance, while gender had minimal impact on food choices, eligibility for free lunches materially influenced students' decisions, underscoring the role of socioeconomic factors."
 format: pdf
 number-sections: true
+toc: true
 bibliography: references.bib
 ---
 
@@ -44,7 +45,7 @@ The goal of the original study was to measure the effect of incentives on the st
 
 The raw dataset analyzed in this paper contained 1631 entries with 31 different variables, where each row represented one student. The data provided in the replication package was very organized with few errors or unrealistic values. As a result, very little filtering of the rows was needed. However, we did do some cleaning to create clean data sets that contained only the specific data we needed to create our figures and tables. Methods such as `filter()`, `mutate()`, and `select()` were used to perform data cleaning. 
 
-Our analysis did not use all of the variables from the raw data file. Specifically, we used *incentive* which represents if the student was provided an incentive, *private* which represents if the student was part of the public or private treatment, their *grade*, the *table size* and *male* which indicates their gender. We additionally used *grape* and *grape2* which represent the student's initial and final food choice. We also used the variables *Black* and *Hispanic* which represent the student's race and ethnicity. Lastly, we used *free* which indicates if the student is a part of the free lunch program.
+Our analysis did not use all of the variables from the raw data file. Specifically, we used *incentive*, which represents if the student was provided with an incentive, *private*, which represents if the student was part of the public or private treatment, their *grade*, the *table size* and *male*, which indicates their gender. We additionally used *grape* and *grape2* which represent the student's initial and final food choice. We also used the variables *Black* and *Hispanic*, which represent the student's race and ethnicity. Lastly, we used *free*, which indicates if the student is a part of the free lunch program.
 
 We created two variables called *Switched* and *Stayed* for use in @fig-foodChoices, @fig-publicNoIncentive, and @fig-publicIncentive. *Switched* is used to determine which students switched from grapes to cookies, cookies to grapes, or did not change their food choices at all. This variable was created from *grape* and *grape2*. The variable *Stayed* was also created from *grape* and *grape2* and was used to determine which students stayed with their initial food choices.
 
@@ -52,7 +53,7 @@ We created two variables called *Switched* and *Stayed* for use in @fig-foodChoi
 
 We created @tbl-table1 to summarize all the students at public treatment tables, with a subset of columns displayed representing some of the factors to be analyzed in @sec-results.
 
-We separated each student into 4 subgroups, based on the following criteria:
+We separated each student into four subgroups, based on the following criteria:
 
 - Public and 0% of the card deck is incentivized,
 
@@ -101,6 +102,7 @@ To begin our analysis, we created @fig-foodChoices, which represents the frequen
 #| warning: false
 #| label: fig-foodChoices
 #| fig-cap: "Students food choices from stage G1 to G2 comparing grape to cookie, cookie to grape, or no change."
+#| fig.pos: "H"
 
 food_choices <-
   read_csv(
@@ -138,6 +140,7 @@ To analyze the individual factors and observe their effect on incentivized stude
 #| warning: false
 #| label: fig-lunchStatus
 #| fig-cap: "Comparing incentivized students choosing grapes if they are eligible or not eligable for the free lunch program"
+#| fig.pos: "H"
 
 # Filter data for incentivized students whose grape2 choice was 1
 incentivized_grapes <- food_choices |>
@@ -168,7 +171,7 @@ ggplot(proportions, aes(x = factor(free), y = Proportion, fill = factor(free))) 
 
 We can see in @fig-lunchStatus that the proportion of students choosing the incentivized grapes that are eligible for free lunches is roughly 94% (15/16). We can compare this to the expected value of 87% since the proportion of all students in public tables who are eligible for free lunches is 0.87, as shown in @tbl-table1.
 
-We can also examine the proportion of incentivized students that chose grapes compared to cookies, grouped by grade in @fig-grade. We observe that from kindergarten to grade 8, the proportion of students choosing cookies in the final stage is around 60-75%, with the majority of grades being closer to 75%. However, for students in grade 8, the proportion of students choosing cookies was less than the proportion of students choosing the incentivized grapes, as only roughly 40% of students chose the cookies. This is a considerable drop compared to all of the lower grades. This may indicate that the older students are more inclined to choose the food option which also allows them to win a prize, and that they are less influenced by the food option itself.
+We can also examine the proportion of incentivized students that chose grapes compared to cookies, grouped by grade in @fig-grade. We observe that from kindergarten to grade 8, the proportion of students choosing cookies in the final stage is around 60-75%, with the majority of grades being closer to 75%. However, for students in grade 8, the proportion of students choosing cookies was less than the proportion of students choosing the incentivized grapes, as only roughly 40% of students chose the cookies. This is a considerable drop compared to all of the lower grades. This may indicate that the older students are more inclined to choose the food option, which also allows them to win a prize, and that they are less influenced by the food option itself.
 
 ```{r}
 #| echo: false
@@ -176,6 +179,7 @@ We can also examine the proportion of incentivized students that chose grapes co
 #| warning: false
 #| label: fig-grade
 #| fig-cap: "Comparing incentivized students choosing grapes or cookies by the students grade"
+#| fig.pos: "H"
 
 # Filter data for incentivized students
 incentivized_students <- food_choices |>
@@ -216,6 +220,7 @@ ggplot(proportions_long, aes(x = grade, y = proportion, fill = choice)) +
 #| warning: false
 #| label: fig-gender
 #| fig-cap: "Comparing incentivized students choosing grapes or cookies by the students gender"
+#| fig.pos: "H"
 
 # Filter data for incentivized students
 incentivized_students <- food_choices |>
@@ -272,6 +277,7 @@ Lastly, we compared the proportion of students in the public treatment who recei
 #| warning: false
 #| label: fig-publicNoIncentive
 #| fig-cap: "Comparing the proportion of students in the public group who recieved no incentive and whether or not they stayed with their initil choice of cookie or grape or if they switched."
+#| fig.pos: "H"
 
 public_incentives <- food_choices|>
   filter(table_incentive_pr == 0)
@@ -306,6 +312,7 @@ We created a similar graph, as seen in @fig-publicIncentive, but with students w
 #| warning: false
 #| label: fig-publicIncentive
 #| fig-cap: "Comparing the proportion of students in the public group who recieved an incentive and whether or not they stayed with their initil choice of cookie or grape or if they switched."
+#| fig.pos: "H"
 
 public_no_incentives <- food_choices|>
   filter(table_incentive_pr == 1)
@@ -357,7 +364,7 @@ In summary, we analyzed the final food choices of the public, and incentivized s
 
 To analyze the potential influences of incentivization on students’ final food choices from a less granular or more general overview, we will discuss the results for @fig-publicNoIncentive, in which we categorized all non-incentivized students based on the progression of their food choice from stage 1 to stage 2. There were three groups that these non-incentivized students were binned as 1) Students who changed from cookie to grape or grape to cookie, 2) Students who stayed with cookies, and 3) Students who stayed with grapes. 
 
-This graph is important because this data includes only students who didn’t have the opportunity to win a prize regardless of their food choice, which meant that students chose the food that they wanted to eat separately from any incentive. @fig-publicNoIncentive indicates that almost half of these students (47%) chose cookies from the start and stayed with their decision. This was 11% higher than the proportion of students that stuck with their choice of grapes. In contrast, only 16% of public, non-incentivized students changed their decision after viewing the food choices of other students at their tables. This may be due to the students having a change of appetite, or due to seeing their friends/peers choosing a different food which influenced them to change their choice. Note, that these three percentages add up to 99% due to individual rounding.
+This graph is important because this data includes only students who didn’t have the opportunity to win a prize regardless of their food choice, which meant that students chose the food that they wanted to eat separately from any incentive. @fig-publicNoIncentive indicates that almost half of these students (47%) chose cookies from the start and stayed with their decision. This was 11% higher than the proportion of students that stuck with their choice of grapes. In contrast, only 16% of public, non-incentivized students changed their decision after viewing the food choices of other students at their tables. This may be due to the students having a change of appetite, or due to seeing their friends/peers choosing a different food, which influenced them to change their choice. Note, that these three percentages add up to 99% due to individual rounding.
 
 ## Progression of Incentivized Student Food Choices
 
