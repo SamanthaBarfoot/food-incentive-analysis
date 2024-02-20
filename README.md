@@ -6,13 +6,15 @@ This paper provides a detailed synthesis and replication of the original study, 
 
 The repo is structured as:
 
--   `input/data` contains the data sources used in analysis including the raw data.
--   `input/sketches` contains the original sketches used to plan the project and data analysis.
+-   `inputs/data` contains the data sources used in analysis including the raw data.
+-   `inputs/sketches` contains the original sketches used to plan the project and data analysis.
+-   `inputs/LLM' contains our ChatGPT history
+-   `inputs/Literature` contains the Angelucci et al. 2019 paper
 -   `outputs/data` contains the cleaned dataset that was constructed.
--   `outputs/paper` contains the files used to generate the paper, including the Quarto document and reference bibliography file, as well as the PDF of the paper. 
+-   `outputs/paper` contains the files used to generate the paper, including the Quarto document and reference bibliography file, as well as the PDF of the paper.
+-   `outputs/paper/replications` contains images of the replicated grpahs and tables
 -   `scripts` contains the R scripts used to simulate, download and clean data.
-
 
 ## Statement on LLM usage
 
-Statement on LLM usage: Aspects of the code were written with the help of the autocomplete tool, ChatGPT. The entire chat history is available in `inputs/LLM/usage.txt`
+Statement on LLM usage: Aspects of the code were written with the help of the autocomplete tool, ChatGPT. We utilized ChatGPT to resolve errors, clean up the data, create Table 1, and generate graphs 1-4. The entire chat history is available in `inputs/LLM/usage.txt`
