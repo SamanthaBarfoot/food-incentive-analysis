@@ -28,7 +28,7 @@ library(dplyr)
 
 # Introduction
 
-In this paper, we will provide a deeper analysis and reproduction of the paper, *Incentives and Unintended Consequences: Spillover Effects in Food Choice* [@angelucci_incentives_2019]. Replications of Table 1, Figure 2 and 3 were also completed from the raw data in which the original paper is based. The original study was conducted on 1631 students from various elementary schools in a low-income neighborhood in Chicago, IL from kindergarten to grade 8. The purpose of the study was to determine whether there were spillover effects of students making decisions based on their peers' decisions as well as the incentives given to their peers. The study consisted of two stages. In the first stage (G1), each student was given a card from a deck which offered the choice of cookies or grapes, where the grapes sometimes came with a prize as an incentive to be chosen. In the second stage (G2), each student was given the opportunity to change their choice of food based on the initial decisions of their peers. Students were sat in tables of sizes up to 10 students, in which the proportion of cards in the deck that contained incentivized grapes were 0%, 50%, or 100%. Furthermore, some tables were designated as public treatment, in which students were able to see the incentive status of their peers, and some tables were designated as private treatment, in which students were unable to see the incentive status of their peers.
+In this paper, we will provide a deeper analysis and reproduction of the paper, *Incentives and Unintended Consequences: Spillover Effects in Food Choice* [@angelucci_incentives_2019]. Replications of Table 1, Figure 2 and 3 were also completed from the raw data in which the original paper is based. The original study was conducted on 1631 students from various elementary schools in a low-income neighborhood in Chicago, IL, from kindergarten to grade 8. The purpose of the study was to determine whether there were spillover effects of students making decisions based on their peers' decisions as well as the incentives given to their peers. The study consisted of two stages. In the first stage (G1), each student was given a card from a deck which offered the choice of cookies or grapes, where the grapes sometimes came with a prize as an incentive to be chosen. In the second stage (G2), each student was given the opportunity to change their choice of food based on the initial decisions of their peers. Students were sat in tables of sizes up to 10 students, in which the proportion of cards in the deck that contained incentivized grapes were 0%, 50%, or 100%. Furthermore, some tables were designated as public treatment, in which students were able to see the incentive status of their peers, and some tables were designated as private treatment, in which students were unable to see the incentive status of their peers.
 
 The remainder of this paper is structured as follows. In @sec-data, we compile the subset of data that strictly includes the students that took part in the public treatment study and not the private treatment study. Students were offered more information to advise their final decisions by being able to see the incentive status of their peers. In @sec-results, we dive deeper into analyzing possible factors that may influence a student's final food choice in stage G2. We leverage `ggplot2` by creating bar graphs to represent the grouped data for the various factors that were analyzed. Finally, in @sec-discussion, we summarize our results and also identify other factors or biases that may have affected the results, on a qualitative or quantitative level.
 
@@ -47,6 +47,8 @@ We separated each student into 4 subgroups, based on the following criteria:
 - Public and 50% of the card deck is incentivized where the student is incentivized, and
 
 - Public and 100% of the card deck is incentivized.
+
+In the @tbl-table1, the results are generally consistent across the 4 subgroups, in which there is low variance among the values in the various columns. This more-or-less even distribution of the races, genders and grades of students across tables of varying incentive levels speaks to the efficacy of the randomness that was intended in the original study. In the next section, we will dive into analyzing the correlation of several individual factors and the choices made in stage G2.
 
 ```{r}
 #| echo: false
@@ -76,13 +78,14 @@ sum_table_final |>
 
 ```
 
-In the table above, the results are generally consistent across the 4 subgroups, in which there is low variance among the values in the various columns. This more-or-less even distribution of the races, genders and grades of students across tables of varying incentive levels speaks to the efficacy of the randomness that was intended in the original study. In the next section, we will dive into analyzing the correlation of several individual factors and the choices made in stage G2.
+
 
 # Results {#sec-results}
 
 To determine whether there is a certain characteristic in students that might influence the decision made in stage G2, particularly their grade, gender, or their eligibility for free lunches, bar graphs were created that group the public student’s data based on each of the chosen factors.
 
 To begin our analysis, we created a graph, @fig-foodChoices, of the frequency of students that either switched their final food choice or kept the same food choice, grouped by the grade of the student. Grade 0 represents students in kindergarten. @fig-foodChoices gives an overview of the public data across all levels of table incentivises, in which students were able to make their final choice based on their peers' initial choices and incentive statuses.
+\newpage
 
 ```{r}
 #| echo: false
@@ -127,12 +130,12 @@ To analyze the individual factors and observe their effect on incentivized stude
 #| fig-cap: "Comparing incentivized students choosing grapes if they are eligible or not eligable for the free lunch program"
 
 # Filter data for incentivized students whose grape2 choice was 1
-incentivized_grapes <- food_choices %>%
+incentivized_grapes <- food_choices |>
   filter(incentive == 1 & grape2 == 1)
 
 # Calculate proportions
-proportions <- incentivized_grapes %>%
-  group_by(free) %>%
+proportions <- incentivized_grapes |>
+  group_by(free) |>
   summarise(Proportion = n() / nrow(incentivized_grapes))
 
 # Create the bar graph
@@ -165,19 +168,19 @@ We can also examine the proportion of incentivized students that chose grapes co
 #| fig-cap: "Comparing incentivized students choosing grapes or cookies by the students grade"
 
 # Filter data for incentivized students
-incentivized_students <- food_choices %>%
+incentivized_students <- food_choices |>
   filter(incentive == 1)
 
 # Calculate proportions of students choosing grapes and cookies for each grade
-proportions <- incentivized_students %>%
-  group_by(grade) %>%
+proportions <- incentivized_students |>
+  group_by(grade) |>
   summarise(
     grapes_proportion = mean(grape2 == 1),
     cookies_proportion = mean(grape2 == 0)
   )
 
 # Reshape the data from wide to long format for plotting
-proportions_long <- proportions %>%
+proportions_long <- proportions |>
   tidyr::pivot_longer(cols = c(grapes_proportion, cookies_proportion),
                       names_to = "choice",
                       values_to = "proportion")
@@ -197,7 +200,8 @@ ggplot(proportions_long, aes(x = grade, y = proportion, fill = choice)) +
 
 We observe that from kindergarten to grade 8, the proportion of students choosing cookies in the final stage is around 60-75%, with the majority of grades being closer to 75%. However, for students in grade 8, the proportion of students choosing cookies was less than the proportion of students choosing the incentivized grapes, as only roughly 40% of students chose the cookies. This is a considerable drop compared to all of the lower grades. This may indicate that the older students are more inclined to choose the food option which also gives them the opportunity to win a prize, and that they are less influenced by the food option itself.
 
-Lastly, we can examine the proportion of incentivized students that chose grapes compared to cookies, grouped by gender in @fig-gender. Compared to the other factors analyzed, there appears to be the least variance or impact on final food choice when isolating based on the gender of the student. The proportion of boys and girls choosing the incentivized grapes, respectively, only differ by a few percentage points.
+
+Finally, @fig-gender compares the food choices of boys and girls students who were incentivized to choose between grapes and cookies. It appears that there is not much difference between boys and girls when it comes to their choices between grapes and cookies. Both genders have a slight preference for grapes and the percentage of students who choose grapes or cookies is almost the same for both genders. From our @fig-gender analysis, summary statistics were calculated, which indicate that, on average, around 31% of boys and 35% of girls chose grapes as their final food option, while approximately 69% of boys and 65% of girls chose cookies. These statistics highlight the balanced distribution of food choices among genders within the incentivized students, suggesting that there is limited gender-based influence on decision-making in this context. In conclusion, it appears that isolating based on gender has the least variance or impact on the final food choice among incentivized students compared to the other factors analyzed. 
 
 ```{r}
 #| echo: false
@@ -207,7 +211,7 @@ Lastly, we can examine the proportion of incentivized students that chose grapes
 #| fig-cap: "Comparing incentivized students choosing grapes or cookies by the students gender"
 
 # Filter data for incentivized students
-incentivized_students <- food_choices %>%
+incentivized_students <- food_choices |>
   filter(incentive == 1)
 
 # Calculate proportions of students choosing grapes and cookies for each gender
@@ -219,7 +223,7 @@ proportions <- incentivized_students |>
   )
 
 # Normalize proportions to ensure they sum up to 1 for each gender
-proportions <- proportions %>%
+proportions <- proportions |>
   mutate(
     total_proportion = grapes_proportion + cookies_proportion,
     grapes_proportion = grapes_proportion / total_proportion,
@@ -227,7 +231,7 @@ proportions <- proportions %>%
   )
 
 # Reshape the data from wide to long format for plotting
-proportions_long <- proportions %>%
+proportions_long <- proportions |>
   tidyr::pivot_longer(cols = c(grapes_proportion, cookies_proportion),
                       names_to = "choice",
                       values_to = "proportion")
@@ -253,7 +257,6 @@ ggplot(proportions_long, aes(x = male, y = proportion, fill = choice)) +
 
 ```
 
-
 ```{r}
 #| echo: false
 #| include: true
@@ -273,6 +276,11 @@ public_incentives <- public_incentives|>
 # Create the bar graph
 ggplot(public_incentives, aes(x = Stayed, y = prop, fill = Stayed)) +
   geom_col() +
+  geom_text(aes(label = round(prop, 2)), 
+            position = position_dodge(width = 0.9), 
+            vjust = -0.5, # Adjust the vertical position of the labels
+            color = "black",
+            size = 3) +
   labs(x = "Choice",
        y = "Proportion") +
   scale_fill_manual(values = c("Changed" = '#BDBDBD', "Stayed Cookie" = '#757575', "Stayed Grape" = '#424242')) +
@@ -301,6 +309,11 @@ public_no_incentives <- public_no_incentives|>
 # Create the bar graph
 ggplot(public_no_incentives, aes(x = Stayed, y = prop, fill = Stayed)) +
   geom_col() +
+    geom_text(aes(label = round(prop, 2)), 
+            position = position_dodge(width = 0.9), 
+            vjust = -0.5, # Adjust the vertical position of the labels
+            color = "black",
+            size = 3) +
   labs(x = "Choice",
        y = "Proportion") +
   scale_fill_manual(values = c("Changed" = '#BDBDBD', "Stayed Cookie" = '#757575', "Stayed Grape" = '#424242')) +
