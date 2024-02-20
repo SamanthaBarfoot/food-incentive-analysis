@@ -96,7 +96,7 @@ Bar graphs were created to determine whether there are certain characteristics i
 
 To begin our analysis, we created @fig-foodChoices, which represents the frequency of students that either switched their final food choice or kept the same food choice, grouped by the grade of the student. Grade 0 represents students in kindergarten. @fig-foodChoices gives an overview of the public data across all levels of table incentivizes, in which students were able to make their final choice based on their peers' initial choices and incentive statuses.
 
-```{r, out.width="105%"}
+```{r}
 #| echo: false
 #| warning: false
 #| label: fig-foodChoices
@@ -121,7 +121,7 @@ ggplot(food_choices, aes(x = as.factor(grade), fill = Switched)) +
   ) +
   labs(x = "Grade",
        y = "Number of Observations",
-       fill = " ") +
+       fill = "Food Changes") +
   scale_fill_manual(values = c("Cookie to Grape" = '#BDBDBD',"Grape to Cookie" = '#757575', "Not Changed" = '#424242')) +
   scale_x_discrete(breaks = as.character(0:8)) +
   theme_minimal()
