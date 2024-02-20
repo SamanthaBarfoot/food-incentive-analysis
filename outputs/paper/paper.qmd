@@ -1,5 +1,5 @@
 ---
-title: "Gender, Age, and Peer Influence in Food Incentive"
+title: "Gender, Age, and Peer Influence on Food Incentives in Schools"
 author: 
   - Samantha Barfoot
   - Brooklin Becker
@@ -55,7 +55,7 @@ In the @tbl-table1, the results are generally consistent across the 4 subgroups,
 #| include: true
 #| warning: false
 #| label: tbl-table1
-#| tbl-cap: "Summary statistics for the four different observation groups: public and 0% of the card deck is incentivized, public and 50% of the card deck is incentivized where the student is not incentivized, public and 50% of the card deck is incentivized where the student is incentivized, and public and 100% of the card deck is incentivized"
+#| tbl-cap: "Summary statistics for the four different public observation: 0% of the card deck is incentivized, 50% of the card deck is incentivized where the student is not incentivized, 50% of the card deck is incentivized where the student is incentivized, and 100% of the card deck is incentivized"
 
 
 sum_table_wide <-
